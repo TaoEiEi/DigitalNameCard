@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DigitalNamecard")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ecbac72987b728a71032d627edb76d95be166e50")]
 [assembly: System.Reflection.AssemblyProductAttribute("DigitalNamecard")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DigitalNamecard")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
