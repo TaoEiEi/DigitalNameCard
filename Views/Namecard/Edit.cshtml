@@ -1,0 +1,208 @@
+@model DigitalNamecard.Models.NamecardModel
+
+@{
+    ViewData["Title"] = "Edit Namecard";
+}
+
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+    <a asp-action="Index" class="d-flex align-items-center small mb-6 text-decoration-hover">
+        <i class="bi bi-arrow-left me-1"></i>
+        Back to My Namecards
+    </a>
+    
+    <h1 class="fs-1 fw-bold mb-6">Edit Your Digital Namecard</h1>
+    
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="CreatedAt" />
+        
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Personal Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label"></label>
+                            <input asp-for="FullName" class="form-control" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="JobTitle" class="form-label"></label>
+                            <input asp-for="JobTitle" class="form-control" />
+                            <span asp-validation-for="JobTitle" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Company" class="form-label"></label>
+                            <input asp-for="Company" class="form-control" />
+                            <span asp-validation-for="Company" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Bio" class="form-label"></label>
+                            <textarea asp-for="Bio" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Bio" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Contact Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" type="email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Phone" class="form-label"></label>
+                            <input asp-for="Phone" class="form-control" type="tel" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Website" class="form-label"></label>
+                            <input asp-for="Website" class="form-control" type="url" />
+                            <span asp-validation-for="Website" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>Social Media</label>
+                            <div id="socialLinksContainer" class="mt-2">
+                                @for (int i = 0; i < Model.SocialLinks.Count; i++)
+                                {
+                                    <div class="input-group mb-2" id="social-@i">
+                                        <span class="input-group-text">
+                                            @if (Model.SocialLinks[i].Platform == "LinkedIn")
+                                            {
+                                                <i class="bi bi-linkedin"></i>
+                                            }
+                                            else if (Model.SocialLinks[i].Platform == "Twitter")
+                                            {
+                                                <i class="bi bi-twitter"></i>
+                                            }
+                                            else if (Model.SocialLinks[i].Platform == "GitHub")
+                                            {
+                                                <i class="bi bi-github"></i>
+                                            }
+                                            else if (Model.SocialLinks[i].Platform == "Facebook")
+                                            {
+                                                <i class="bi bi-facebook"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="bi bi-link-45deg"></i>
+                                            }
+                                        </span>
+                                        <input type="hidden" name="SocialLinks[@i].Id" value="@Model.SocialLinks[i].Id" />
+                                        <input type="hidden" name="SocialLinks[@i].Platform" value="@Model.SocialLinks[i].Platform" />
+                                        <input type="url" class="form-control" name="SocialLinks[@i].Url" value="@Model.SocialLinks[i].Url" />
+                                        <button type="button" class="btn btn-outline-danger" onclick="removeSocialLink('social-@i')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                            
+                            <div class="row g-2 mt-3">
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-outline-secondary w-100 text-start" id="addFacebook">
+                                        <i class="bi bi-facebook me-2"></i>
+                                        Add Facebook
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-outline-secondary w-100 text-start" id="addTwitter">
+                                        <i class="bi bi-twitter me-2"></i>
+                                        Add Twitter
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-outline-secondary w-100 text-start" id="addLinkedIn">
+                                        <i class="bi bi-linkedin me-2"></i>
+                                        Add LinkedIn
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-outline-secondary w-100 text-start" id="addGitHub">
+                                        <i class="bi bi-github me-2"></i>
+                                        Add GitHub
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4 d-flex justify-content-between">
+            <a asp-action="View" asp-route-id="@Model.Id" class="btn btn-outline-secondary">
+                <i class="bi bi-eye me-2"></i>
+                View Namecard
+            </a>
+            <div>
+                <a asp-action="Index" class="btn btn-outline-secondary me-2">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-2"></i>
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // Social media buttons
+            $("#addFacebook").click(function() { addSocialLink("Facebook"); });
+            $("#addTwitter").click(function() { addSocialLink("Twitter"); });
+            $("#addLinkedIn").click(function() { addSocialLink("LinkedIn"); });
+            $("#addGitHub").click(function() { addSocialLink("GitHub"); });
+            
+            // Function to add social link
+            function addSocialLink(platform) {
+                const linkId = Date.now();
+                const socialCount = $("#socialLinksContainer").children().length;
+                const html = `
+                    <div class="input-group mb-2" id="social-new-${linkId}">
+                        <span class="input-group-text">
+                            <i class="bi bi-${platform.toLowerCase()}"></i>
+                        </span>
+                        <input type="hidden" name="SocialLinks[${socialCount}].Platform" value="${platform}">
+                        <input type="url" class="form-control" name="SocialLinks[${socialCount}].Url" placeholder="${platform} URL">
+                        <button type="button" class="btn btn-outline-danger" onclick="removeSocialLink('social-new-${linkId}')">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                `;
+                $("#socialLinksContainer").append(html);
+            }
+            
+            // Make removeSocialLink global
+            window.removeSocialLink = function(id) {
+                $(`#${id}`).remove();
+            };
+        });
+    </script>
+}
+

@@ -1,0 +1,90 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* Custom styles for the namecard app */
+.bg-white-20 {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.border-dashed {
+  border-style: dashed !important;
+}
+
+.text-decoration-hover:hover {
+  text-decoration: underline !important;
+}
+
+.hover-bg-light:hover {
+  background-color: var(--bs-light);
+}
+
+.transition {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Gradient backgrounds for templates */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+}
+
+.bg-gradient-warning {
+  background: linear-gradient(135deg, #f6c23e 0%, #f4b619 100%);
+}
+
+.bg-gradient-success {
+  background: linear-gradient(135deg, #1cc88a 0%, #13855c 100%);
+}
+
+.bg-gradient-secondary {
+  background: linear-gradient(135deg, #858796 0%, #60616f 100%);
+}
+
+/* Aspect ratio utility */
+.ratio-4x3 {
+  aspect-ratio: 4 / 3;
+}
+
+/* Max width utilities */
+.max-w-md {
+  max-width: 28rem;
+}
+
+.max-w-2xl {
+  max-width: 42rem;
+}
+
+.max-w-4xl {
+  max-width: 56rem;
+}
+
+/* Width and height utilities */
+.w-16,
+.h-16 {
+  width: 4rem;
+  height: 4rem;
+}
+

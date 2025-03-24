@@ -1,0 +1,10 @@
+C:\Users\user\source\repos\DigitalNamecard\DigitalNamecard\obj\Release\net9.0\win-x64\PubTmp\Out\DigitalNamecard.exe
+C:\Users\user\source\repos\DigitalNamecard\DigitalNamecard\obj\Release\net9.0\win-x64\PubTmp\Out\appsettings.Development.json
+C:\Users\user\source\repos\DigitalNamecard\DigitalNamecard\obj\Release\net9.0\win-x64\PubTmp\Out\appsettings.json
+C:\Users\user\source\repos\DigitalNamecard\DigitalNamecard\obj\Release\net9.0\win-x64\PubTmp\Out\components.json
+C:\Users\user\source\repos\DigitalNamecard\DigitalNamecard\obj\Release\net9.0\win-x64\PubTmp\Out\package.json
+C:\Users\user\source\repos\DigitalNamecard\DigitalNamecard\obj\Release\net9.0\win-x64\PubTmp\Out\tsconfig.json
+C:\Users\user\source\repos\DigitalNamecard\DigitalNamecard\obj\Release\net9.0\win-x64\PubTmp\Out\DigitalNamecard.dll
+C:\Users\user\source\repos\DigitalNamecard\DigitalNamecard\obj\Release\net9.0\win-x64\PubTmp\Out\DigitalNamecard.deps.json
+C:\Users\user\source\repos\DigitalNamecard\DigitalNamecard\obj\Release\net9.0\win-x64\PubTmp\Out\DigitalNamecard.runtimeconfig.json
+C:\Users\user\source\repos\DigitalNamecard\DigitalNamecard\obj\Release\net9.0\win-x64\PubTmp\Out\DigitalNamecard.pdb

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\user\source\repos\DigitalNamecard\DigitalNamecard\bin\Release\net9.0\publish\</_PublishTargetUrl>
+    <History>True|2025-03-21T04:47:13.2191629Z||;True|2025-03-21T08:52:24.5762375+07:00||;True|2025-03-21T08:44:33.4288121+07:00||;True|2025-03-21T08:43:57.2093075+07:00||;True|2025-03-21T08:23:29.2654754+07:00||;True|2025-03-16T14:10:49.9535576+07:00||;True|2025-03-14T19:37:18.5341563+07:00||;True|2025-03-14T19:26:45.3689264+07:00||;True|2025-03-14T18:57:20.1520323+07:00||;True|2025-03-14T18:50:53.4663325+07:00||;True|2025-03-14T14:09:23.5802260+07:00||;True|2025-03-14T11:07:26.2703703+07:00||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

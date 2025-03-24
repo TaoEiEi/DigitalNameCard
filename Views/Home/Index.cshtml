@@ -1,0 +1,136 @@
+@{
+    ViewData["Title"] = "Digital Namecard";
+}
+
+<div class="container mx-auto px-4 py-8">
+    <header class="mb-8 text-center">
+        <h1 class="text-3xl font-bold tracking-tight">Digital Namecard</h1>
+        <p class="text-muted-foreground mt-2">Create and share your professional digital business card</p>
+    </header>
+
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Example namecard -->
+        <div class="card overflow-hidden">
+            <div class="card-header bg-primary text-white p-6">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="card-title fs-4">John Doe</h5>
+                        <p class="card-subtitle text-white-50 mt-1">
+                            Software Developer
+                        </p>
+                    </div>
+                    <div class="h-16 w-16 rounded-circle bg-white-20 d-flex align-items-center justify-content-center fs-4 fw-bold">
+                        JD
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-6">
+                <div class="d-flex flex-column gap-3">
+                    <div>
+                        <p class="small text-muted">Email</p>
+                        <p>john.doe@example.com</p>
+                    </div>
+                    <div>
+                        <p class="small text-muted">Phone</p>
+                        <p>+1 (555) 123-4567</p>
+                    </div>
+                    <div>
+                        <p class="small text-muted">Company</p>
+                        <p>Tech Solutions Inc.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-light p-4 d-flex justify-content-between">
+                <a href="#" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-qr-code me-2"></i>
+                    QR Code
+                </a>
+                <a href="#" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-share me-2"></i>
+                    Share
+                </a>
+            </div>
+        </div>
+
+        <!-- Create new card -->
+        <div class="card d-flex flex-column align-items-center justify-content-center p-6 border-dashed">
+            <div class="rounded-circle bg-light w-16 h-16 d-flex align-items-center justify-content-center mb-4">
+                <i class="bi bi-plus fs-4 text-muted"></i>
+            </div>
+            <h3 class="fw-medium fs-5 mb-2">Create New Card</h3>
+            <p class="text-muted text-center mb-4">
+                Design your professional digital business card
+            </p>
+            <a asp-controller="Namecard" asp-action="Create" class="btn btn-primary">Get Started</a>
+        </div>
+
+        <!-- Templates card -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Templates</h5>
+                <p class="card-subtitle text-muted">
+                    Choose from our professional templates
+                </p>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="aspect-ratio ratio-4x3 rounded bg-gradient-primary"></div>
+                    <div class="aspect-ratio ratio-4x3 rounded bg-gradient-warning"></div>
+                    <div class="aspect-ratio ratio-4x3 rounded bg-gradient-success"></div>
+                    <div class="aspect-ratio ratio-4x3 rounded bg-gradient-secondary"></div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-outline-secondary w-100">Browse All Templates</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-12">
+        <h2 class="text-2xl font-bold mb-6">Features</h2>
+        <div class="grid gap-6 md:grid-cols-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title d-flex align-items-center">
+                        <i class="bi bi-qr-code me-2"></i>
+                        QR Code Sharing
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">
+                        Generate a QR code for your digital namecard that others can scan to instantly save your contact information.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title d-flex align-items-center">
+                        <i class="bi bi-download me-2"></i>
+                        Export Options
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">
+                        Export your digital namecard as a PDF, image, or vCard file to share through email or messaging apps.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title d-flex align-items-center">
+                        <i class="bi bi-pencil-square me-2"></i>
+                        Easy Customization
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">
+                        Customize your namecard with your brand colors, logo, and choose from multiple layout options.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

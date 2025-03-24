@@ -1,0 +1,463 @@
+@model DigitalNamecard.Models.NamecardModel
+
+@{
+    Layout = null;
+    var namecardUrl = Url.Action("View", "Namecard", new { id = Model.Id }, Context.Request.Scheme);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Model.FullName - Digital Business Card</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .card-container {
+            transition: all 0.3s ease-in-out;
+            flex: 1 0 auto;
+        }
+
+            .card-container:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+
+        .social-link:hover {
+            transform: scale(1.02);
+        }
+
+        .text-pink-500 {
+            color: #ff69b4;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border: 4px solid #ff69b4;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .social-media-container {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .footer-actions {
+            flex-shrink: 0;
+        }
+
+        /* สไตล์สำหรับ Contact Modal */
+        .contact-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .contact-modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+        }
+
+            .contact-modal-content button,
+            .contact-modal-content a {
+                width: 100%;
+                margin: 10px 0;
+            }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center p-6">
+    <div class="card-container bg-white rounded-xl overflow-hidden max-w-2xl w-full border border-gray-200">
+        <!-- Header Section -->
+        <div class="p-8 relative">
+            <!-- เพิ่ม relative เพื่อให้ absolute positioning อ้างอิงจาก div นี้ -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex flex-col items-center md:items-start">
+                    @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+                    {
+                        <img src="@Url.Content(Model.ProfileImageUrl)" alt="Profile Picture" class="profile-img rounded-full mb-4" />
+                    }
+                    else
+                    {
+                        <div class="w-32 h-32 bg-gray-200 rounded-full mb-4 flex items-center justify-center text-gray-500">
+                            No Image
+                        </div>
+                    }
+                    <h1 class="text-3xl font-bold text-pink-500">@Model.FullName</h1>
+                    <p class="text-gray-600 text-lg mt-1">@Model.JobTitle</p>
+                </div>
+                <div class="absolute top-0 right-0 p-8">
+                    <!-- ใช้ absolute เพื่อวางโลโก้ชิดขอบบนขวา -->
+                    @if (!string.IsNullOrEmpty(Model.LogoUrl))
+                    {
+                        <img src="@Url.Content(Model.LogoUrl)" alt="Chulalongkorn University Logo" class="h-20" />
+                    }
+                    else
+                    {
+                        <div class="h-12 flex items-center justify-center text-gray-500">
+                            No Logo
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="p-8 space-y-6">
+            @if (!string.IsNullOrEmpty(Model.Bio))
+            {
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800 border-b border-gray-200 pb-2">About Me</h2>
+                    <p class="text-gray-600 mt-3 leading-relaxed">@Model.Bio</p>
+                </div>
+            }
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Contact Information -->
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800 border-b border-gray-200 pb-2">Contact Details</h2>
+                    <div class="mt-4 space-y-4 text-gray-700">
+                        @if (!string.IsNullOrEmpty(Model.Address))
+                        {
+                            <div class="flex items-start">
+                                <i class="bi bi-geo-alt text-xl text-gray-500 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500">Address</p>
+                                    <p class="text-gray-600">@Model.Address</p>
+                                </div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.Phone))
+                        {
+                            <div class="flex items-start">
+                                <i class="bi bi-telephone text-xl text-gray-500 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500">Tel</p>
+                                    <a href="tel:+@Model.Phone" class="text-pink-500 hover:underline">+@Model.Phone</a>
+                                </div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.Fax))
+                        {
+                            <div class="flex items-start">
+                                <i class="bi bi-fax text-xl text-gray-500 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500">Fax</p>
+                                    <p class="text-gray-600">+@Model.Fax</p>
+                                </div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.Mobile))
+                        {
+                            <div class="flex items-start">
+                                <i class="bi bi-phone text-xl text-gray-500 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500">Mobile</p>
+                                    <a href="tel:+@Model.Mobile" class="text-pink-500 hover:underline">+@Model.Mobile</a>
+                                </div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.Email))
+                        {
+                            <div class="flex items-start">
+                                <i class="bi bi-envelope text-xl text-gray-500 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500">Email</p>
+                                    <a href="mailto:@Model.Email" class="text-pink-500 hover:underline">@Model.Email</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Social Media -->
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800 border-b border-gray-200 pb-2">Connect With Me</h2>
+                    <div class="social-media-container mt-4 space-y-3">
+                        @if (Model.SocialLinks != null && Model.SocialLinks.Any())
+                        {
+                            @foreach (var link in Model.SocialLinks)
+                            {
+                                <div class="social-link flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        @switch (link.Platform.ToLower())
+                                        {
+                                            case "linkedin":
+                                                <i class="bi bi-linkedin text-xl text-pink-500 mr-2"></i>
+                                                <span class="text-gray-700">LinkedIn</span>
+                                                break;
+                                            case "twitter":
+                                                <i class="bi bi-twitter text-xl text-pink-500 mr-2"></i>
+                                                <span class="text-gray-700">Twitter</span>
+                                                break;
+                                            case "github":
+                                                <i class="bi bi-github text-xl text-pink-500 mr-2"></i>
+                                                <span class="text-gray-700">GitHub</span>
+                                                break;
+                                            case "whatsapp":
+                                                <i class="bi bi-whatsapp text-xl text-pink-500 mr-2"></i>
+                                                <span class="text-gray-700">WhatsApp</span>
+                                                break;
+                                            case "line":
+                                                <i class="bi bi-line text-xl text-pink-500 mr-2"></i>
+                                                <span class="text-gray-700">LINE</span>
+                                                break;
+                                            case "wechat":
+                                                <i class="bi bi-wechat text-xl text-pink-500 mr-2"></i>
+                                                <span class="text-gray-700">WeChat</span>
+                                                break;
+                                            case "kakaotalk":
+                                                <i class="bi bi-chat-dots text-xl text-pink-500 mr-2"></i>
+                                                <span class="text-gray-700">KakaoTalk</span>
+                                                break;
+                                            case "facebook":
+                                                <i class="bi bi-facebook text-xl text-pink-500 mr-2"></i>
+                                                <span class="text-gray-700">Facebook</span>
+                                                break;
+                                            case "instagram":
+                                                <i class="bi bi-instagram text-xl text-pink-500 mr-2"></i>
+                                                <span class="text-gray-700">Instagram</span>
+                                                break;
+                                            case "pubmed":
+                                                <i class="bi bi-book text-xl text-pink-500 mr-2"></i>
+                                                <span class="text-gray-700">PubMed</span>
+                                                break;
+                                            default:
+                                                <i class="bi bi-link-45deg text-xl text-pink-500 mr-2"></i>
+                                                <span class="text-gray-700">@link.Platform</span>
+                                                break;
+                                        }
+                                    </div>
+                                    <button class="contact-btn bg-pink-500 text-white px-3 py-1 rounded-lg hover:bg-pink-600 transition duration-200 flex items-center" data-url="@link.Url" data-platform="@link.Platform">
+                                        <i class="bi bi-three-dots mr-1"></i> Contact
+                                    </button>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-gray-600"></p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="footer-actions bg-gray-50 p-6 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-200">
+            <button id="generateQRBtn" class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition duration-200 flex items-center">
+                <i class="bi bi-qr-code mr-2"></i> Generate QR Code
+            </button>
+            <a href="#" id="downloadVCard" class="bg-gray-600 text-white px-5 py-2 rounded-lg hover:bg-gray-700 transition duration-200 flex items-center">
+                <i class="bi bi-download mr-2"></i> Save Contact
+            </a>
+        </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">QR Code</h2>
+                <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <p class="text-gray-600 mb-4">Scan this code to connect</p>
+            <div class="text-center">
+                <img id="qrImage" src="" alt="QR Code" class="mx-auto border p-2 mb-4" />
+                <div class="flex items-center gap-2">
+                    <input type="text" id="qrUrl" value="" class="flex-1 p-2 border rounded text-gray-700" readonly>
+                    <button id="copyQRUrl" class="bg-pink-500 text-white p-2 rounded hover:bg-pink-600">
+                        <i class="bi bi-clipboard"></i>
+                    </button>
+                </div>
+                <button id="downloadQR" class="mt-4 bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+                    <i class="bi bi-download mr-2"></i> Download QR Code
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="contact-modal">
+        <div class="contact-modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="contactModalTitle" class="text-xl font-semibold text-gray-800"></h2>
+                <button id="closeContactModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <a id="contactLink" href="#" target="_blank" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200 flex items-center justify-center">
+                <i class="bi bi-link-45deg mr-2"></i> Visit Link
+            </a>
+            <button id="showQR" class="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition duration-200 flex items-center justify-center">
+                <i class="bi bi-qr-code mr-2"></i> Show QR Code
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        $(document).ready(function() {
+            // Contact Modal Handling
+            const contactModal = $('#contactModal');
+            const closeContactModalBtn = $('#closeContactModal');
+
+            $('.contact-btn').click(function(e) {
+                e.preventDefault();
+                const url = $(this).data('url');
+                const platform = $(this).data('platform');
+
+                // ตั้งค่าข้อมูลใน Modal
+                $('#contactModalTitle').text(`${platform} Options`);
+                $('#contactLink').attr('href', url);
+                $('#showQR').data('url', url);
+
+                contactModal.show();
+            });
+
+            closeContactModalBtn.click(function() {
+                contactModal.hide();
+            });
+
+            $(window).click(function(e) {
+                if (e.target === contactModal[0]) {
+                    contactModal.hide();
+                }
+            });
+
+            // QR Code Modal Handling
+            const qrModal = $('#qrModal');
+            const closeModalBtn = $('#closeModal');
+
+            $('#showQR').click(function() {
+                const url = $(this).data('url');
+                $('#qrImage').attr('src', `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`);
+                $('#qrUrl').val(url);
+                contactModal.hide(); // ปิด Contact Modal
+                qrModal.show(); // เปิด QR Modal
+            });
+
+            closeModalBtn.click(function() {
+                qrModal.hide();
+            });
+
+            $(window).click(function(e) {
+                if (e.target === qrModal[0]) {
+                    qrModal.hide();
+                }
+            });
+
+            $('#copyQRUrl').click(function() {
+                const urlInput = $('#qrUrl');
+                urlInput.select();
+                document.execCommand('copy');
+                const originalHtml = $(this).html();
+                $(this).html('<i class="bi bi-check"></i>');
+                setTimeout(() => $(this).html(originalHtml), 2000);
+            });
+
+            $('#downloadQR').click(function() {
+                const qrImg = $('#qrImage').attr('src');
+                const a = document.createElement('a');
+                a.href = qrImg;
+                a.download = 'social_qr_code.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+
+            // Generate QR Code Button
+            $('#generateQRBtn').click(function() {
+                const namecardUrl = '@Url.Action("View", "Namecard", new { id = Model.Id }, Context.Request.Scheme)';
+                $('#qrImage').attr('src', `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(namecardUrl)}`);
+                $('#qrUrl').val(namecardUrl);
+                qrModal.show();
+            });
+
+            // Download vCard
+            $("#downloadVCard").click(function(e) {
+                e.preventDefault();
+                let vCardLines = [
+                    'BEGIN:VCARD',
+                    'VERSION:3.0',
+                    'FN:@Model.FullName',
+                    'TITLE:@Model.JobTitle',
+                    'ORG:@Model.Company',
+                    'EMAIL:@Model.Email'
+                ];
+        @if (!string.IsNullOrEmpty(Model.Phone))
+        {
+            @:vCardLines.push('TEL:+@Model.Phone');
+        }
+        @if (!string.IsNullOrEmpty(Model.Fax))
+        {
+            @:vCardLines.push('TEL;TYPE=FAX:+@Model.Fax');
+        }
+        @if (!string.IsNullOrEmpty(Model.Mobile))
+        {
+            @:vCardLines.push('TEL;TYPE=CELL:+@Model.Mobile');
+        }
+        @if (!string.IsNullOrEmpty(Model.Website))
+        {
+            @:vCardLines.push('URL:@Model.Website');
+        }
+                vCardLines.push('ADR:;;@Model.Address');
+                vCardLines.push('END:VCARD');
+
+                const vCard = vCardLines.join('\n');
+                const blob = new Blob([vCard], { type: 'text/vcard' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = '@Model.FullName.Replace(" ", "_")_contact.vcf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+@{
+    ViewData["Title"] = "QR Code";
+    var namecardUrl = Url.Action("View", "Namecard", new { id = ViewBag.NamecardId }, Context.Request.Scheme);
+}
+
+<div class="container mx-auto px-4 py-8 max-w-md">
+    <a asp-action="View" asp-route-id="@ViewBag.NamecardId" class="d-flex align-items-center small mb-6 text-decoration-hover">
+        <i class="bi bi-arrow-left me-1"></i>
+        Back to Namecard
+    </a>
+    
+    <div class="card">
+        <div class="card-header">
+            <h1 class="fs-4 fw-bold">QR Code for Your Namecard</h1>
+            <p class="text-muted">Scan this code to view the digital namecard</p>
+        </div>
+        <div class="card-body text-center p-5">
+            <div class="mb-4">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=@namecardUrl" alt="QR Code" class="img-fluid border p-2" />
+            </div>
+            <p class="mb-1">Or share this link:</p>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" value="@namecardUrl" id="namecardUrl" readonly>
+                <button class="btn btn-outline-secondary" type="button" id="copyBtn">
+                    <i class="bi bi-clipboard"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <a asp-action="View" asp-route-id="@ViewBag.NamecardId" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>
+                Back
+            </a>
+            <a href="#" class="btn btn-primary" id="downloadQR">
+                <i class="bi bi-download me-2"></i>
+                Download QR Code
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Copy URL button
+            $("#copyBtn").click(function() {
+                const urlInput = document.getElementById("namecardUrl");
+                urlInput.select();
+                document.execCommand("copy");
+                
+                // Show feedback
+                const originalHtml = $(this).html();
+                $(this).html('<i class="bi bi-check"></i>');
+                setTimeout(() => {
+                    $(this).html(originalHtml);
+                }, 2000);
+            });
+            
+            // Download QR code
+            $("#downloadQR").click(function(e) {
+                e.preventDefault();
+                
+                // Get the QR code image
+                const qrImg = document.querySelector(".card-body img");
+                
+                // Create a temporary link
+                const a = document.createElement("a");
+                a.href = qrImg.src;
+                a.download = "namecard_qr_code.png";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+}
+

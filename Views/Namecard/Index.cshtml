@@ -1,0 +1,129 @@
+@model IEnumerable<DigitalNamecard.Models.NamecardModel>
+
+@{
+    ViewData["Title"] = "My Namecards";
+}
+
+<div class="container mx-auto px-4 py-8">
+    <div class="d-flex justify-content-between align-items-center mb-6">
+        <h1 class="fs-2 fw-bold">My Namecards</h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus me-2"></i>
+            Create New
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="bi bi-person-vcard fs-1 text-muted"></i>
+            </div>
+            <h2 class="fs-4 mb-3">No namecards yet</h2>
+            <p class="text-muted mb-4">Create your first digital namecard to get started</p>
+            <a asp-action="Create" class="btn btn-primary">
+                Create Namecard
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                var namecardUrl = Url.Action("View", "Namecard", new { id = item.Id }, Context.Request.Scheme);
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h5 class="card-title">@item.FullName</h5>
+                                    <p class="card-subtitle text-white-50">
+                                        @item.JobTitle
+                                    </p>
+                                </div>
+                                <div class="rounded-circle bg-white-20 d-flex align-items-center justify-content-center fs-5 fw-bold" style="width: 3rem; height: 3rem;">
+                                    @(string.Join("", item.FullName.Split(' ').Select(n => n[0]).Take(2)))
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex flex-column gap-2">
+                                <div>
+                                    <p class="small text-muted">Email</p>
+                                    <p>@item.Email</p>
+                                </div>
+                                <div>
+                                    <p class="small text-muted">Created</p>
+                                    <p>@item.CreatedAt.ToString("MMM d, yyyy")</p>
+                                </div>
+                                <!-- QR Code Section -->
+                                <div class="mt-3 text-center">
+                                    <h6 class="fw-bold">QR Code</h6>
+                                    <p class="small text-muted">Scan to view namecard</p>
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=@namecardUrl" alt="QR Code" class="img-fluid border p-2 mb-2" />
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control namecard-url" value="@namecardUrl" readonly>
+                                        <button class="btn btn-outline-secondary copy-btn" type="button">
+                                            <i class="bi bi-clipboard"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <a asp-action="View" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-eye me-1"></i>
+                                View
+                            </a>
+                            <div>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary btn-sm me-2">
+                                    <i class="bi bi-pencil me-1"></i>
+                                    Edit
+                                </a>
+                                <a href="#" class="btn btn-primary btn-sm download-qr" data-url="@namecardUrl">
+                                    <i class="bi bi-download me-1"></i>
+                                    Download QR
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Copy URL buttons
+            $(".copy-btn").click(function() {
+                const $input = $(this).closest('.input-group').find('.namecard-url');
+                $input.select();
+                document.execCommand("copy");
+
+                // Show feedback
+                const originalHtml = $(this).html();
+                $(this).html('<i class="bi bi-check"></i>');
+                setTimeout(() => {
+                    $(this).html(originalHtml);
+                }, 2000);
+            });
+
+            // Download QR codes
+            $(".download-qr").click(function(e) {
+                e.preventDefault();
+                const qrUrl = $(this).closest('.card').find('img').attr('src');
+
+                // Create a temporary link
+                const a = document.createElement("a");
+                a.href = qrUrl;
+                a.download = "namecard_qr_code.png";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+}
